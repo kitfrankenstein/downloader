@@ -2,7 +2,6 @@ package download;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,10 +50,6 @@ public abstract class Downloader extends Observable implements Runnable, Seriali
 	protected transient StringProperty outputFolderP = new SimpleStringProperty();
 	protected transient StringProperty downloadedP = new SimpleStringProperty();
 	protected transient StringProperty stateP = new SimpleStringProperty();
-	
-    private void writeObject(ObjectOutputStream s) throws IOException {
-    	s.defaultWriteObject();
-    }
     
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
     	s.defaultReadObject();
@@ -65,23 +60,20 @@ public abstract class Downloader extends Observable implements Runnable, Seriali
     	stateP = new SimpleStringProperty(STATUSES[mState]);   	
     }
 
+    //设置property
 	protected void setFileNameP(String fileName) {
 		this.fileNameP.set(fileName);
 	}
-
 	protected void setFileSizeP(int fileSize) {
 		this.fileSizeP.set(String.valueOf(fileSize));
 	}
-
 	protected void setOutputFolderP(String outputFolder) {
 		this.outputFolderP.set(outputFolder);
 	}
-
 	protected void setDownloadedP(String downloaded) {
 		this.downloadedP.set(downloaded);
 		notifyObservers();
 	}	
-
 	protected void setStateP(String state) {
 		this.stateP.set(state);
 	}
@@ -89,20 +81,16 @@ public abstract class Downloader extends Observable implements Runnable, Seriali
 	//UI获取属性的方法
 	public StringProperty fileNamePProperty() {
 		return fileNameP;
-	}
-	
+	}	
 	public StringProperty fileSizePProperty() {
 		return fileSizeP;
-	}
-	
+	}	
 	public StringProperty outputFolderPProperty() {
 		return outputFolderP;
-	}
-	
+	}	
 	public StringProperty downloadedPProperty() {
 		return downloadedP;
-	}
-	
+	}	
 	public StringProperty statePProperty() {
 		return stateP;
 	}
@@ -135,7 +123,6 @@ public abstract class Downloader extends Observable implements Runnable, Seriali
 		mURL = url;
 		mNumConnections = numConnections;
 		
-		// Get the file name from url path
 		String fileURL = url.getFile();
 		mFileName = fileURL.substring(fileURL.lastIndexOf('/') + 1);
 		setFileNameP(mFileName);
